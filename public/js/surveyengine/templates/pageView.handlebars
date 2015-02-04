@@ -1,0 +1,74 @@
+<div id="surveyTitle" class="col-sm-12 col-md-12">
+    {{surveyTitle}}
+</div>
+<div id="pageTitle" class="col-sm-12 col-md-12">
+    <a href="javascript:DesignController.showChangePageName();">{{pageTitle}}</a>
+</div>
+<div id="surveyContainer" class="col-sm-12 col-md-12">
+    {{#each questions}}
+        <div class="col-sm-12 col-md-12 questionContainer sortable" id="questionContainer-{{@index}}">
+            <div class="col-sm-12 col-md-12 questionOptions" id="questionOptions-{{@index}}">
+                <button class="btn btn-default" onclick="DesignController.editQuestion({{this.id}});">Edit</button>
+                <button class="btn btn-default">Options</button>
+                <button class="btn btn-warning" onclick="/surveyengine/question/copy/{{this.id}}?pageId={{../pageId}}">Copy</button>
+                <button class="btn btn-danger" onclick="if(confirm('Are you sure you want to do this?')){ DesignController.deleteQuestion({{this.id}}); }else{ return false; }">Delete</button>
+            </div>
+            <div class="col-sm-12 col-md-12 question" id="question-{{@index}}">
+                <div class="col-sm-12 col-md-12">
+                    <div class="col-sm-12 col-md-12 questionTitle">
+                        {{questionText}}
+                    </div>
+                    {{#if type desired="1" type=renderId}}
+                        {{#each this.answers}}
+                            <div class="col-sm-12 col-md-12">
+                                <input type="radio" name="{{this.questionId}}" id="{{this.questionId}}" value="{{this.id}}" /> {{this.answerText}}
+                            </div>
+                        {{/each}}
+                    {{/if}}
+                    {{#if type desired="2" type=renderId}}
+                        {{#each this.answers}}
+                            <div class="col-sm-12 col-md-12">
+                                <input type="checkbox" name="{{this.id}}" id="{{this.id}}" /> {{this.answerText}}
+                            </div>
+                        {{/each}}
+                    {{/if}}
+                    {{#if type desired="3" type=renderId}}
+                        {{#each this.answers}}
+                            <div class="col-sm-12 col-md-12">
+                                <input style="width:100%;" type="text" name="{{this.questionId}}" id="{{this.questionId}}" />
+                            </div>
+                        {{/each}}
+                    {{/if}}
+                    {{#if type desired="4" type=renderId}}
+                        {{#each this.answers}}
+                            <div class="col-sm-12 col-md-12">
+                                <textarea name="{{this.questionId}}" id="{{this.questionId}}" style="width:100%;" rows="5"></textarea>
+                            </div>
+                        {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+        $("#questionContainer-{{@index}}").hover(
+            function() { 
+                $("#question-{{@index}}").addClass("questionHover"); 
+                $("#question-{{@index}}").fadeTo(0, 0.4);
+                $("#questionOptions-{{@index}}").toggle();
+            },
+            function() { 
+                $("#question-{{@index}}").removeClass("questionHover"); 
+                $("#question-{{@index}}").fadeTo(0, 1);
+                $("#questionOptions-{{@index}}").toggle();
+            }
+        );
+        </script>
+    {{/each}}
+</div>
+
+<script type="text/javascript">
+$(function(){
+    $('#surveyContainer').sortable({placeholder: "ui-state-highlight",helper:'clone',cursor: 'move'});
+})
+</script>

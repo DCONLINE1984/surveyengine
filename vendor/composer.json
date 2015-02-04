@@ -1,0 +1,7 @@
+{
+    "minimum-stability":"dev",
+    "require": {
+        "zf-commons/zfc-user": "0.1.*",
+        "mohit-singh/zf2auth-acl": "V1.0.1"
+    }
+}

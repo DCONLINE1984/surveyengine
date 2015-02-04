@@ -1,0 +1,204 @@
+<script src="/js/surveyengine/DesignController.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-3" style="border:1px solid #000;background-color:#FFFFD1;min-height:500px;padding:0;">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:#FFD365;">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">BUILDER</a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <button class="btn btn-warning col-sm-12 col-md-12" onclick="DesignController.addQuestion('MULTIPLE');">Multiple Choice</button>
+                            <button class="btn btn-warning col-sm-12 col-md-12" onclick="DesignController.addQuestion('DROPBOX');">Dropdown</button>
+                            <button class="btn btn-warning col-sm-12 col-md-12" onclick="DesignController.addQuestion('RATING');">Matrix / Rating</button>
+                            <button class="btn btn-warning col-sm-12 col-md-12" onclick="DesignController.addQuestion('RANKING');">Ranking</button>
+                            <button class="btn btn-warning col-sm-12 col-md-12" onclick="DesignController.addQuestion('TEXT');">Single Text</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:#FFD365;">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">QUESTION BANK</a>
+                        </h4>
+                    </div>
+                    <div id="collapseTwo" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>Questions will go here.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:#FFD365;">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">OPTIONS</a>
+                        </h4>
+                    </div>
+                    <div id="collapseThree" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <p>Options will go here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-1 col-md-1">&nbsp;</div>
+        <div id="survey" class="col-sm-8 col-md-8" style="border:1px solid #000;;min-height:500px;">
+            <!-- dynamic content here -->
+        </div>
+    </div>
+</div>
+
+<style>
+    .sidenav{
+        padding:10px;
+        border-bottom:1px solid #000;
+    }
+    #options{
+        padding:0;
+    }
+    .sideheader{
+        background-color:#000;
+        color:#FFF;
+    }
+    #surveyTitle, #pageTitle{
+        background-color:#FFD365;
+        height:40px;
+        line-height:40px;
+        font-family:'Open Sans', Arial, Helvetice Neue, sans-serif;
+        font-size:16px;
+        font-weight:500;
+    }
+    #pageTitle{
+        background-color:#FFFFD1;
+    }
+    #survey{
+        padding:0;
+        font-family:'Open Sans', Arial, Helvetice Neue, sans-serif;
+        font-size:16px;
+    }
+    .panel-body{
+        background-color:#FFFFD1;
+    }
+    #surveyContainer{
+        font-family:'Open Sans', Arial, Helvetice Neue, sans-serif;
+        font-size:16px;
+        padding-top:15px;
+        padding-bottom:15px;
+    }
+    .panel-title, .panel-heading{
+        background-color:#FFD365;
+    }
+    .questionContainer{
+        padding:0;
+        padding-top:10px;
+        margin:0;
+        position: relative;
+    }
+    .questionTitle{
+        padding:0;
+        font-weight:500;
+        margin-bottom:10px;
+    }
+    .questionHover{
+        border:1px dotted #000;
+    }
+    .questionOptions{
+        position: absolute;
+        top: 10px;
+        left: 0;
+        z-index:1000;
+    }
+    .questionOptions{
+        text-align:right;
+        display:none;
+        margin-top:5px;
+    }
+    .question{
+        top: 0;
+        left: 0;
+        z-index:0;
+        padding:10px;
+    }
+    .panel-body button{
+        margin-bottom:5px;
+    }
+    #pageTitle:hover{
+        border:1px dotted #000;
+    }
+    .row{
+        margin-bottom:5px;
+    }
+    .modal-header{
+        background-color:#FFD365;
+    }
+    .modal-footer{
+        background-color:#FFFFD1;
+    }
+    form label{
+        font-weight:normal;
+    }
+</style>
+<script>
+$("#optionsSelector").click(function(){
+    $("#options").toggle(); //show/hide
+});
+$("#questionBankSelector").click(function(){
+    $("#questionBank").toggle(); //show/hide
+});
+$("#builderSelector").click(function(){
+    $("#builder").toggle(); //show/hide
+});
+</script>
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"></div>
+            <div class="modal-body"></div>
+            <div class="modal-footer clearfix" style="clear:both;">
+                <button type="button" class="btn btn-success" id="save">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pageNameModal" tabindex="-1" role="dialog" aria-labelledby="pageNameModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"></div>
+            <div class="modal-body"></div>
+            <div class="modal-footer clearfix" style="clear:both;">
+                <button type="button" class="btn btn-success" id="pageNameSave">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"></div>
+            <div class="modal-body"></div>
+            <div class="modal-footer clearfix" style="clear:both;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$( document ).ready(function() {
+    DesignController.loadPageView();
+    DesignController.loadDefaultEvents();
+    //DesignController.loadMultipleChoice();
+});
+</script>
