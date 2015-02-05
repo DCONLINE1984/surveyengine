@@ -20,7 +20,8 @@ class Question extends CommonEncoder
      */
     public $fields = array('id'             => 'id',
                            'questionText'   => 'question_text',
-                           'renderId'       => 'render_id');
+                           'renderId'       => 'render_id',
+                           'parentId'       => 'parent_id');
 
     /**
      * Constructor

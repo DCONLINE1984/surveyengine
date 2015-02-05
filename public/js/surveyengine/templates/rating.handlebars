@@ -1,0 +1,65 @@
+<form id="question" method="POST" class="form-horizontal" enctype="multipart/form-data">
+    <input type="hidden" name="type" id="type" value="RATING" />
+    <input type="hidden" name="surveyId" id="surveyId" value="{{surveyId}}" />
+    <input type="hidden" name="pageId" id="pageId" value="{{pageId}}" />
+    <input type="hidden" name="questionId" id="questionId" value="{{questionId}}" />
+    <input type="hidden" name="mode" id="mode" value="{{mode}}" />
+    <div class="col-sm-12 col-md-12">
+        <div class="row">
+            <div class="col-sm-7 col-md-7">
+                <strong>Matrix / Rating</strong>
+            </div>
+            <div class="col-sm-5 col-md-5">
+                <input type="checkbox" name="showSuggestedQuestions" id="showSuggestedQuestions" /> <label for="showSuggestedQuestions" data-toggle="tooltip" title="Autocomplete question entry using question bank">Show Auto Complete</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                <input type="text" name="headerText" id="headerText" placeholder="Enter a heading (optional)" style="width:100%;" value="{{headerText}}" />
+            </div>
+        </div>
+        <div class="row" style="margin-top:30px;">
+            <div class="col-sm-12 col-md-12">
+                <strong>Questions</strong>
+            </div>
+        </div>
+        <div id="questionChoices">
+            {{#each columns}}
+                <div class="row" id="{{@index}}">
+                    <div class="col-sm-10 col-md-10">
+                        <input type="text" style="width:100%;" name="questionChoice{{@index}}" id="questionChoice{{@index}}" placeholder="Enter question text" value="{{this.answerText}}" />
+                    </div>
+                    <div class="col-sm-1 col-md-1">
+                        <span class="glyphicon glyphicon-plus" style="color:green" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-sm-1 col-md-1">
+                        <span class="glyphicon glyphicon-minus" style="color:red" aria-hidden="true"></span>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <div class="row" style="margin-top:30px;">
+            <div class="col-sm-7 col-md-7">
+                <strong>Answer Choices</strong>
+            </div>
+            <div class="col-sm-5 col-md-5">
+                <a href="#">Copy &amp; Paste Answer Options</a>
+            </div>
+        </div>
+        <div id="answerChoices">
+            {{#each answers}}
+                <div class="row" id="{{@index}}">
+                    <div class="col-sm-10 col-md-10">
+                        <input type="text" style="width:100%;" name="answerChoice{{@index}}" id="answerChoice{{@index}}" placeholder="Enter an answer choice" value="{{this.answerText}}" />
+                    </div>
+                    <div class="col-sm-1 col-md-1">
+                        <span class="glyphicon glyphicon-plus" style="color:green" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-sm-1 col-md-1">
+                        <span class="glyphicon glyphicon-minus" style="color:red" aria-hidden="true"></span>
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</form>

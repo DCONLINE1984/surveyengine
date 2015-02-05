@@ -46,6 +46,23 @@
                             </div>
                         {{/each}}
                     {{/if}}
+                    {{#if type desired="6" type=renderId}}
+                        <div class="col-sm-12 col-md-12">
+                            <select name="{{this.questionId}}" id="{{this.questionId}}">
+                                <option value="ERROR">-- Please select an option --</option>
+                                {{#each this.answers}}
+                                    <option value="{{this.id}}">{{this.answerText}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    {{/if}}
+                    {{#if type desired="7" type=renderId}}
+                        {{#each this.answers}}
+                            <div class="col-sm-12 col-md-12">
+                                {{this.questionText}}
+                            </div>
+                        {{/each}}
+                    {{/if}}
                 </div>
             </div>
         </div>

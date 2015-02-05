@@ -16,6 +16,15 @@ DesignController = function() {
             case "TEXT":
                 path = "/js/surveyengine/templates/text.handlebars";
             break;
+            case "RATING":
+                path = "/js/surveyengine/templates/rating.handlebars";
+            break;
+            case "DROPDOWN":
+                path = "/js/surveyengine/templates/dropdown.handlebars";
+            break;
+            case "HTML":
+                path = "/js/surveyengine/templates/html.handlebars";
+            break;
             default:
                 path = "/js/surveyengine/templates/multipleChoice.handlebars";
             break;
@@ -33,7 +42,9 @@ DesignController = function() {
                     questionText: "",
                     answers: [{ answerText: "", id: "", questionId: "" },
                               { answerText: "", id: "", questionId: "" },
-                              { answerText: "", id: "", questionId: "" }] 
+                              { answerText: "", id: "", questionId: "" }],
+                    columns: [{ columnText: "Yes", id: "", questionId: "" },
+                              { columnText: "No",  id: "", questionId: "" }]
                 };   
                 template  = Handlebars.compile(source);
                 $(".modal-body").html(template(data));
@@ -68,6 +79,15 @@ DesignController = function() {
                         isTextArea = "true";
                         path = "/js/surveyengine/templates/text.handlebars";
                     break;
+                    case "5":
+                        path = "/js/surveyengine/templates/rating.handlebars";
+                    break;
+                    case "6":
+                        path = "/js/surveyengine/templates/dropdown.handlebars";
+                    break;
+                    case "7":
+                        path = "/js/surveyengine/templates/html.handlebars";
+                    break;
                     default:
                         path = "/js/surveyengine/templates/multipleChoice.handlebars";
                     break;
@@ -82,7 +102,9 @@ DesignController = function() {
                             surveyId: 1,
                             questionId: questionId,
                             questionText: callback.collection.questionText,
+                            headingText: callback.collection.headerText,
                             answers: callback.collection.answers,
+                            questions: callback.collection.answers,
                             mode: "edit",
                             isTextArea: isTextArea
                         };
@@ -169,16 +191,13 @@ DesignController = function() {
             data: "surveyId=1",
             dataType: "json",
             success: function(callback) {
-                var path = "/js/surveyengine/templates/pageView.handlebars";
+                var path = "/js/surveyengine/templates/pageView.handlebars?stamp="+$.now();
                 var template;
                 $.ajax({
                     url: path,
                     cache: true,
                     success: function(source) {
                         var pageName = callback.page.name.length>0? callback.page.name : '+ Add Page Title';
-                        
-                        
-
                         var data = {
                            surveyTitle: callback.survey.name,
                            surveyId:    callback.survey.id,

@@ -26,6 +26,12 @@ class Question extends \Application\Model\CommonModel
     protected $renderId;
     
     /**
+     * Holds the parent id (for grouping purposes)
+     * @var int
+     */
+    protected $parentId;
+    
+    /**
      * Set the question text
      * @param  int  $id
      * @return \Api\Model\Question
@@ -63,5 +69,25 @@ class Question extends \Application\Model\CommonModel
     public function getRenderId()
     {
         return $this->renderId;
+    }
+    
+    /**
+     * Set the parent id
+     * @param  int $id
+     * @return \Api\Model\Question
+     */
+    public function setParentId($id)
+    {
+        $this->parentId = $id;
+        return $this;
+    }
+    
+    /**
+     * Get the parent id
+     * @return int
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
     }
 }

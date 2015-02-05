@@ -32,12 +32,29 @@ class Question extends CommonService
     {
         switch($parameters['type']){
             case "MULTIPLE":
-                    if($parameters['mode']=='add'){
-                        return $this->addMultipleChoice($parameters);
-                    }else{
-                        return $this->editMultipleChoice($parameters);
-                    }
-                break;
+                $renderId = 1;
+                if(isset($parameters['makeCheckbox'])){
+                    $renderId = 2;
+                }
+                if($parameters['mode']=='add'){
+                    return $this->addMultipleChoice($parameters, $renderId);
+                }else{
+                    return $this->editMultipleChoice($parameters, $renderId);
+                }
+            break;
+            case "DROPDOWN":
+                //we can just use the same multiple choice code, just need
+                //to change the render id to 6
+                if($parameters['mode']=='add'){
+                    return $this->addMultipleChoice($parameters, 6);
+                }else{
+                    return $this->editMultipleChoice($parameters, 6);
+                }
+            break;
+            case "RATING":
+            break;
+            case "HTML":
+            break;
             case "TEXT":
                     if($parameters['mode']=='add'){
                         return $this->addText($parameters);
@@ -52,18 +69,15 @@ class Question extends CommonService
     /**
      * Add a new multiple choice
      * @param  array $parameters
+     * @param  int   $render
      * @return array
      */
-    public function addMultipleChoice($parameters)
+    public function addMultipleChoice($parameters, $render)
     {
         $answerService =       $this->getServiceLocator()->get("Api\Service\Answer");
         $pageQuestionService = $this->getServiceLocator()->get("Api\Service\PageQuestion");
         $surveyId = $parameters['surveyId'];
         $pageId   = $parameters['pageId'];
-        $render = 1;
-        if(isset($parameters['makeCheckbox'])){
-            $render = 2;
-        }
         $questionModel = new \Api\Model\Question();
         $questionModel->setQuestionText($parameters['questionText'])
                       ->setRenderId($render);
@@ -92,18 +106,15 @@ class Question extends CommonService
     /**
      * Edit a multiple choice question
      * @param  array $parameters
+     * @param  int   $render
      * @return array
      */
-    public function editMultipleChoice($parameters)
+    public function editMultipleChoice($parameters, $render)
     {
         $answerService =       $this->getServiceLocator()->get("Api\Service\Answer");
         $pageQuestionService = $this->getServiceLocator()->get("Api\Service\PageQuestion");
         $surveyId = $parameters['surveyId'];
         $pageId   = $parameters['pageId'];
-        $render = 1;
-        if(isset($parameters['makeCheckbox'])){
-            $render = 2;
-        }
         $questionModel = $this->getServiceLocator()->get("Api\Service\Question")->fetchById($parameters['questionId']);
         $questionModel->setQuestionText($parameters['questionText'])
                       ->setRenderId($render);
