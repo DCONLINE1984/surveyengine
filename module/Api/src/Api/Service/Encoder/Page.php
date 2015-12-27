@@ -20,7 +20,8 @@ class Page extends CommonEncoder
      */
     public $fields = array('id'            => 'id',
                            'name'          => 'name',
-                           'sortOrder'     => 'sort_order');
+                           'sortOrder'     => 'sort_order',
+                           'surveyId'      => 'survey_id');
 
     /**
      * Constructor

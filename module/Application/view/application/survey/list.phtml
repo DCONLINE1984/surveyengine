@@ -1,0 +1,54 @@
+<div class="col-sm-12 col-md-12 formTitle">Survey list</div>
+
+<div class="col-sm-12 col-md-12 contentcontainer">
+    
+<table id="table" width="100%" data-toggle="bootgrid">
+    <thead>
+        <tr>
+            <th data-column-id="id">ID</th>
+            <th data-column-id="name">Name</th>
+            <th data-column-id="expiresDate">Expires</th>
+            <th data-column-id="design" data-formatter="design">Design</th>
+            <th data-column-id="edit" data-formatter="edit">Edit</th>
+            <th data-column-id="delete" data-formatter="delete">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+<?php
+
+if(!empty($this->surveys)){
+    foreach($this->surveys as $model){
+        $expiresDate = new \DateTime($model->getExpiresDate());
+        $expiresDate = $expiresDate->format("m-d-Y");
+        print '<tr>';
+        print '<td>'.$model->getId().'</td>';
+        print '<td>'.$model->getName().'</td>';
+        print '<td>'.$expiresDate.'</td>';
+        print '<td></td>';
+        print '<td></td>';
+        print '<td></td>';
+        print '</tr>';
+    }
+}
+
+?>
+    </tbody>
+</table>
+    
+</div>
+
+<script type="text/javascript">
+    $("#table").bootgrid({
+        formatters: {
+            "design": function(column, row) {
+                return "<a class='btn btn-success' href='/surveyengine/survey/"+row.id+"'>Design</a>";
+            },
+            "edit": function(column, row) {
+                return "<a class='btn btn-success' href='/surveyengine/survey/edit/"+row.id+"'>Edit</a>";
+            },
+            "delete": function(column, row) {
+                return "<a class='btn btn-danger' onclick='return confirm(\"Are you sure you want to do this?\");' href='/surveyengine/survey/delete/"+row.id+"'>Delete</a>";
+            }
+        }
+    });
+</script>

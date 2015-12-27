@@ -6,11 +6,18 @@ DesignController = function() {
     this.currentPageNumber = 1;
     
     /**
+     * Holds the survey id
+     * @var Int
+     */
+    this.surveyId = 1;
+    
+    /**
      * Add question
      * @param   string
      * @returns void
      */
     this.addQuestion = function(type) {
+        var me   = this;
         var path = "";
         switch(type){
             case "TEXT":
@@ -35,8 +42,8 @@ DesignController = function() {
             cache: false,
             success: function(source) {
                 var data = {
-                    pageId: 1,
-                    surveyId: 1,
+                    pageNumber: me.currentPageNumber,
+                    surveyId: me.surveyId,
                     questionId: 0,
                     mode: "add",
                     questionText: "",
@@ -60,6 +67,7 @@ DesignController = function() {
      * @returns void
      */
     this.editQuestion = function(questionId) {
+        var me   = this;
         //before we load the page, we need to grab the defaults for the question
         var path = "/survey-api/question/read";
         $.ajax({
@@ -69,6 +77,7 @@ DesignController = function() {
             data: "questionId="+questionId,
             dataType: "json",
             success: function(callback) {
+                callback.collection = callback.collection[0];
                 var path = "";
                 var isTextArea = "false";
                 switch(callback.collection.renderId){
@@ -98,18 +107,18 @@ DesignController = function() {
                     cache: false,
                     success: function(source) {
                         var data = {
-                            pageId: 1,
-                            surveyId: 1,
+                            pageNumber: me.currentPageNumber,
+                            surveyId: me.surveyId,
                             questionId: questionId,
                             questionText: callback.collection.questionText,
-                            headingText: callback.collection.headerText,
+                            headingText: callback.collection.header,
                             answers: callback.collection.answers,
                             questions: callback.collection.answers,
                             mode: "edit",
                             isTextArea: isTextArea
                         };
                         template  = Handlebars.compile(source);
-                        $(".modal-body").html(template(data));
+                        $("#modal .modal-body").html(template(data));
                         $("#modal").modal('show');
                         DesignController.addAnswerChoiceListeners();
                     }               
@@ -148,19 +157,21 @@ DesignController = function() {
      * @returns void
      */
     this.save = function() {
+        var me   = this;
         var path = "/surveyengine/question/add";
         $.ajax({
             url: path,
             cache: false,
             type: "POST",
-            data: $("#question").serialize(),
+            data: $("#question").serialize() + "&surveyId="+me.surveyId + "&pageNumber="+me.currentPageNumber,
             //dataType: "json",
             success: function(callback) {
                 if(callback.result){
-                    DesignController.loadPageView();
+                    DesignController.loadPageView(me.surveyId);
                     $("#resultModal .modal-header").html("SUCCESS");
                     $("#resultModal .modal-body").html("Your question was saved correctly");
                     $("#modal").modal('hide');
+                    $("#addQuestionBankModal").modal('hide');
                     $("#resultModal").modal('show');
                     setTimeout(function(){
                         $("#resultModal").modal('hide');
@@ -169,6 +180,7 @@ DesignController = function() {
                     $("#resultModal .modal-header").html("UH-OH");
                     $("#resultModal .modal-body").html("Your question was NOT saved correctly");
                     $("#modal").modal('hide');
+                    $("#addQuestionBankModal").modal('hide');
                     $("#resultModal").modal('show');
                     setTimeout(function(){
                         $("#resultModal").modal('hide');
@@ -182,13 +194,15 @@ DesignController = function() {
      * Load the page
      * @returns void
      */
-    this.loadPageView = function() {
-        var path = "/surveyengine/page/"+this.currentPageNumber;
+    this.loadPageView = function(surveyId) {
+        var me       = this;
+        me.surveyId  = surveyId;
+        var path     = "/surveyengine/page/"+this.currentPageNumber;
         $.ajax({
             url: path,
             cache: false,
             type: "POST",
-            data: "surveyId=1",
+            data: "surveyId="+surveyId,
             dataType: "json",
             success: function(callback) {
                 var path = "/js/surveyengine/templates/pageView.handlebars?stamp="+$.now();
@@ -204,7 +218,7 @@ DesignController = function() {
                            pageId:      callback.page.id,
                            pageTitle:   pageName,
                            questions:   callback.questions
-                        };   
+                        };
                         template  = Handlebars.compile(source);
                         $("#survey").html(template(data));
                     }               
@@ -218,6 +232,7 @@ DesignController = function() {
      * @returns void
      */
     this.showChangePageName = function() {
+        var me   = this;
         var path = "/js/surveyengine/templates/changePageName.handlebars";
         var template;
         $.ajax({
@@ -227,7 +242,7 @@ DesignController = function() {
                 //var pageName = callback.page.name.length>0? callback.page.name : '+ Add Page Title';
                 var data = {
                    pageTitle: $("#pageTitle a").html(),
-                   surveyId: 1,
+                   surveyId: me.surveyId,
                    pageId: DesignController.currentPageNumber
                 };
                 template  = Handlebars.compile(source);
@@ -247,10 +262,10 @@ DesignController = function() {
             url: path,
             cache: false,
             type: "POST",
-            data: $("#changePageNameForm").serialize()+"&sortOrder=1",
+            data: $("#changePageNameForm").serialize(),
             dataType: "json",
-            success: function(callback) {
-                if(callback.result){
+            complete: function(callback) {
+                if(callback.responseJSON.result){
                     $("#pageTitle a").html($("#name").val()); //update with the new page name
                     $("#resultModal .modal-header").html("SUCCESS");
                     $("#resultModal .modal-body").html("The page name was saved correctly");
@@ -268,7 +283,9 @@ DesignController = function() {
                         $("#resultModal").modal('hide');
                     }, 3000);
                 }
-            }               
+            },
+            failure: function(callback) {
+            }
         });
     };
     

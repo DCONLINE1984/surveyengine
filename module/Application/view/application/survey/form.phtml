@@ -1,0 +1,43 @@
+<style>
+    fieldset{
+        background-color:#FFFFD1;
+        padding:20px;
+        border:1px solid #CCCCCC;
+        color: #000;
+    }
+</style>
+
+<form action="<?php print $this->action; ?>" method="POST">
+    <fieldset>
+        <input type="hidden" id="uid" name="uid" value="<?php print @$this->id; ?>" />
+        <div class="col-sm-12 col-md-12">
+            <div class="col-sm-3 col-md-3">
+                <label><span style="color:red;">*</span> Name:</label>
+            </div>
+            <div class="col-sm-9 col-md-9">
+                <input type="text" placeholder="name..." required value="<?php print @$this->name; ?>" name="name" id="name" style="width: 300px;"/>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12">
+            <div class="col-sm-3 col-md-3">
+                <label><span style="color:red;">*</span> Expires:</label>
+            </div>
+            <div class="col-sm-9 col-md-9">
+                <input type="text" placeholder="date..." required value="<?php print @$this->expiresDate; ?>"readonly="readonly" name="expiresDate" id="expiresDate" style="width: 300px;"/>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12">
+            <div class="col-cm-3 col-md-3">&nbsp;</div>
+            <div class="col-cm-9 col-md-9">
+                <input type="submit" class="btn btn-success" value="Save" />
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="Helpers.clearForm();">Clear</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        $("#expiresDate").datepicker();
+    });
+</script>

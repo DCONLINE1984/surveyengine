@@ -1,7 +1,9 @@
 <script src="/js/surveyengine/DesignController.js"></script>
+<script src="/js/surveyengine/QuestionBankController.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div class="container">
     <div class="row">
-        <div class="col-sm-3 col-md-3" style="border:1px solid #000;background-color:#FFFFD1;min-height:500px;padding:0;">
+        <div class="col-sm-3 col-md-3" style="border:1px solid #000;border-right:0;background-color:#FFFFD1;min-height:500px;padding:0;">
             <div class="panel-group" id="accordion">
                 <div class="panel panel-default">
                     <div class="panel-heading" style="background-color:#FFD365;">
@@ -28,7 +30,13 @@
                     </div>
                     <div id="collapseTwo" class="panel-collapse collapse">
                         <div class="panel-body">
-                            <p>Questions will go here.</p>
+                            <div class="col-md-8">
+                                <input style="height:35px;" type="text" id="searchQuestionBank" placeholder="search..." />
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success" onclick="QuestionBankController.search();">GO</button>
+                            </div>
+                            <div class="col-md-12" id="questionBankListing" style="display:none;"></div>
                         </div>
                     </div>
                 </div>
@@ -46,8 +54,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-1 col-md-1">&nbsp;</div>
-        <div id="survey" class="col-sm-8 col-md-8" style="border:1px solid #000;;min-height:500px;">
+        <div id="survey" class="col-sm-9 col-md-9" style="border:1px solid #000;;min-height:500px;">
             <!-- dynamic content here -->
         </div>
     </div>
@@ -72,6 +79,10 @@
         font-family:'Open Sans', Arial, Helvetice Neue, sans-serif;
         font-size:16px;
         font-weight:500;
+    }
+    #surveyTitle{
+        height:39px;
+        line-height:39px;
     }
     #pageTitle{
         background-color:#FFFFD1;
@@ -105,24 +116,29 @@
         margin-bottom:10px;
     }
     .questionHover{
-        border:1px dotted #000;
+        border:1px solid #000;
     }
     .questionOptions{
         position: absolute;
         top: 10px;
         left: 0;
         z-index:1000;
-    }
-    .questionOptions{
-        text-align:right;
+        text-align:center;
         display:none;
-        margin-top:5px;
+        padding-top:5px;
+        padding-bottom:5px;
+        background-color:#FFD365;
+        border:1px solid #000;
+    }
+    .questionOptions .btn{
+        width: 24%;
     }
     .question{
         top: 0;
         left: 0;
         z-index:0;
         padding:10px;
+        background-color:white;
     }
     .panel-body button{
         margin-bottom:5px;
@@ -183,6 +199,20 @@ $("#builderSelector").click(function(){
   </div>
 </div>
 
+<div class="modal fade" id="addQuestionBankModal" tabindex="-1" role="dialog" aria-labelledby="pageNameModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header"></div>
+            <div class="modal-body"></div>
+            <div class="modal-footer clearfix" style="clear:both;">
+                <button type="button" class="btn btn-success" id="questionBankAdd" onclick="QuestionBankController.addQuestion();">Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
 <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -198,8 +228,8 @@ $("#builderSelector").click(function(){
 
 <script>
 $( document ).ready(function() {
-    DesignController.loadPageView();
+    //QuestionBankController.loadQuestionBank();
+    DesignController.loadPageView(<?php print $this->id; ?>);
     DesignController.loadDefaultEvents();
-    //DesignController.loadMultipleChoice();
 });
 </script>

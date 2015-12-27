@@ -47,14 +47,18 @@ class PageController extends CommonController
      */
     public function updateAction()
     {
-        if(!\Api\Service\Encoder\Page::validateParameters($this->getRequest()->getPost())){
+        $post = $this->getRequest()->getPost();
+        $encoder = new \Api\Service\Encoder\Page();
+        $result = $encoder->validateParameters($post);
+        if(!$result){
             $this->getResponse()->setStatusCode(400);
             return new \Zend\View\Model\JsonModel(array("result" => "false",
                                                         "error" => "Incorrect parameters"));
         }else{
-            $model = $this->getServiceLocator()->get("Api\Service\Page")->fetchById($this->params()->fromPost("pageId"));
-            $model->setName($this->params()->fromPost("name"))
-                  ->setSortOrder($this->params()->fromPost("sortOrder"));
+            $model = $this->getServiceLocator()->get("Api\Service\Page")->fetchAll(array('survey_id' => $this->params()->fromPost("surveyId"),
+                                                                                         'sort_order' => $this->params()->fromPost("pageId")));
+            $model = $model[0];
+            $model->setName($this->params()->fromPost("name"));
             $model = $this->getServiceLocator()->get("Api\Service\Page")->update($model);
             if($model instanceof \Api\Model\Page){
                 return new \Zend\View\Model\JsonModel(array("result" => "true",

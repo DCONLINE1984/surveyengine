@@ -52,6 +52,8 @@ class Survey extends \Application\Model\CommonModel
      */
     public function setExpiresDate($date)
     {
+        $date = new \DateTime($date);
+        $date = $date->format('Y-m-d H:i:s'); //format for mysql
         $this->expiresDate = $date;
         return $this;
     }

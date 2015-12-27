@@ -1,0 +1,8 @@
+<div class="col-sm-12 col-md-12 formTitle">Edit a survey</div>
+
+<?php
+
+echo $this->partial('survey/form', array('name'         => $this->name,
+                                         'expiresDate'  => $this->expiresDate,
+                                         'action'       => '/surveyengine/survey/save-edit',
+                                         'id'           => $this->id));

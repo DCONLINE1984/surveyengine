@@ -41,8 +41,24 @@ class Page extends CommonService
             $answers       = $answerService->fetchAll(array('question_id' => $questionModel->getId()));
             $questionModel = $questionModel->toArray();
             $questionModel['answers'] = \Api\Service\Encoder\Answer::toArray($answers);
-            $questionCollection[] = $questionModel;
+            if($questionModel['renderId']!=5){
+                $questionCollection[$questionModel['id']]['questions'][]    = $questionModel;
+                $questionCollection[$questionModel['id']]['questionText']   = $questionModel['questionText'];
+                $questionCollection[$questionModel['id']]['renderId']       = $questionModel['renderId'];
+                $questionCollection[$questionModel['id']]['id']             = $questionModel['id'];
+            }else{
+                if(isset($questionCollection[$questionModel['parentId']])){
+                    $questionCollection[$questionModel['parentId']]['questions'][] = $questionModel;
+                }else{
+                    $questionCollection[$questionModel['id']]['questions'][]    = $questionModel;
+                    $questionCollection[$questionModel['id']]['questionText']   = $questionModel['header'];
+                    $questionCollection[$questionModel['id']]['renderId']       = $questionModel['renderId'];
+                    $questionCollection[$questionModel['id']]['id']             = $questionModel['id'];
+                    $questionCollection[$questionModel['id']]['columns']        = $questionModel['answers'];
+                }
+            }
         }
+        $questionCollection = array_values($questionCollection);
         return $questionCollection;
     }
 }

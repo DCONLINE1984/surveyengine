@@ -134,7 +134,7 @@ abstract class CommonService implements ServiceLocatorAwareInterface
     public function insert($obj)
     {
         $insert = $this->getDb()->insert($this->table);
-        $values = $obj->toArray($results);
+        $values = $obj->toArray();
         $values = $this->getEncoder()->map($values);
         unset($values[$this->primaryKey]);
         $insert->values($values);
@@ -167,7 +167,7 @@ abstract class CommonService implements ServiceLocatorAwareInterface
     public function update($obj)
     {
         $insert = $this->getDb()->update($this->table);
-        $values = $obj->toArray($results);
+        $values = $obj->toArray();
         $values = $this->getEncoder()->map($values);
         $insert->where(array($this->primaryKey => $values[$this->primaryKey]));
         unset($values[$this->primaryKey]);

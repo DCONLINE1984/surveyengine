@@ -98,16 +98,24 @@ class QuestionController extends CommonController
      */
     public function readAction()
     {
-        $id = $this->params()->fromPost('questionId', null);
+        $id     = $this->params()->fromPost('questionId', null);
         if(!is_null($id)){
             //filter by specific id
-            $results = $this->getServiceLocator()->get("Api\Service\Question")->fetchById(array('id' => $id))->toArray();
-            //now we need to attach any answers
-            $answers = $this->getServiceLocator()->get("Api\Service\Answer")->fetchAll(array('question_id' => $id));
-            $results['answers'] = \Api\Service\Encoder\Question::toArray($answers);
+            $results = $this->getServiceLocator()->get("Api\Service\Question")->fetchById(array('id' => $id));
+            if(!empty($results)){
+                $finalDatasource = array();
+                $results = $results->toArray();
+                //now we need to attach any answers
+                $answers = $this->getServiceLocator()->get("Api\Service\Answer")->fetchAll(array('question_id' => $id));
+                $results['answers'] = \Api\Service\Encoder\Question::toArray($answers);
+                $finalDatasource[] = $results;
+                $results = $finalDatasource;
+            }else{
+                $results = array();
+            }
         }else{
             $results = $this->getServiceLocator()->get("Api\Service\Question")->fetchAll();
-            $results = \Api\Service\Encoder\Question::toJson($results);
+            $results = \Api\Service\Encoder\Question::toArray($results);
         }
         return new \Zend\View\Model\JsonModel(array("result" => "true",
                                                     "error"  => "",

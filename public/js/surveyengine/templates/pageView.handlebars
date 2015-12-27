@@ -5,7 +5,7 @@
     <a href="javascript:DesignController.showChangePageName();">{{pageTitle}}</a>
 </div>
 <div id="surveyContainer" class="col-sm-12 col-md-12">
-    {{#each questions}}
+    {{#each this.questions}}
         <div class="col-sm-12 col-md-12 questionContainer sortable" id="questionContainer-{{@index}}">
             <div class="col-sm-12 col-md-12 questionOptions" id="questionOptions-{{@index}}">
                 <button class="btn btn-default" onclick="DesignController.editQuestion({{this.id}});">Edit</button>
@@ -15,53 +15,76 @@
             </div>
             <div class="col-sm-12 col-md-12 question" id="question-{{@index}}">
                 <div class="col-sm-12 col-md-12">
-                    <div class="col-sm-12 col-md-12 questionTitle">
-                        {{questionText}}
+                    <div class="col-sm-3 col-md-3 questionTitle">
+                        {{{this.questionText}}}
                     </div>
                     {{#if type desired="1" type=renderId}}
-                        {{#each this.answers}}
-                            <div class="col-sm-12 col-md-12">
-                                <input type="radio" name="{{this.questionId}}" id="{{this.questionId}}" value="{{this.id}}" /> {{this.answerText}}
+                        {{#each this.questions}}
+                            <div class="col-sm-9 col-md-9">
+                                {{#each this.answers}}
+                                    <input type="radio" name="{{this.questionId}}" id="{{this.questionId}}" value="{{this.id}}" /> {{this.answerText}}<br />
+                                {{/each}}
                             </div>
                         {{/each}}
                     {{/if}}
                     {{#if type desired="2" type=renderId}}
-                        {{#each this.answers}}
-                            <div class="col-sm-12 col-md-12">
-                                <input type="checkbox" name="{{this.id}}" id="{{this.id}}" /> {{this.answerText}}
+                        {{#each this.questions}}
+                            <div class="col-sm-9 col-md-9">
+                                {{#each this.answers}}
+                                    <input type="checkbox" name="{{this.id}}" id="{{this.id}}" /> {{this.answerText}}
+                                {{/each}}
                             </div>
                         {{/each}}
                     {{/if}}
                     {{#if type desired="3" type=renderId}}
-                        {{#each this.answers}}
-                            <div class="col-sm-12 col-md-12">
-                                <input style="width:100%;" type="text" name="{{this.questionId}}" id="{{this.questionId}}" />
-                            </div>
+                        {{#each this.questions}}
+                            {{#each this.answers}}
+                                <div class="col-sm-9 col-md-9">
+                                    <input style="width:100%;" type="text" name="{{this.questionId}}" id="{{this.questionId}}" />
+                                </div>
+                            {{/each}}
                         {{/each}}
                     {{/if}}
                     {{#if type desired="4" type=renderId}}
-                        {{#each this.answers}}
-                            <div class="col-sm-12 col-md-12">
-                                <textarea name="{{this.questionId}}" id="{{this.questionId}}" style="width:100%;" rows="5"></textarea>
-                            </div>
+                        {{#each this.questions}}
+                            {{#each this.answers}}
+                                <div class="col-sm-9 col-md-9">
+                                    <textarea name="{{this.questionId}}" id="{{this.questionId}}" style="width:100%;" rows="5"></textarea>
+                                </div>
+                            {{/each}}
                         {{/each}}
                     {{/if}}
-                    {{#if type desired="6" type=renderId}}
-                        <div class="col-sm-12 col-md-12">
-                            <select name="{{this.questionId}}" id="{{this.questionId}}">
-                                <option value="ERROR">-- Please select an option --</option>
-                                {{#each this.answers}}
-                                    <option value="{{this.id}}">{{this.answerText}}</option>
+                    {{#if type desired="5" type=renderId}}
+                        <div class="col-sm-9 col-md-9">
+                            <table width="100%">
+                                <tr><th>&nbsp;</th>
+                                {{#each this.columns}}
+                                    <th style="text-align:center;">{{this.answerText}}</th>
                                 {{/each}}
-                            </select>
+                                </tr>
+                                {{#each this.questions}}
+                                    <tr><td>{{this.questionText}}</td>
+                                    {{#each this.answers}}
+                                        <td style="text-align:center;"><input type="radio" /></td>
+                                    {{/each}}
+                                    </tr>
+                                {{/each}}
+                            </table>
                         </div>
                     {{/if}}
-                    {{#if type desired="7" type=renderId}}
-                        {{#each this.answers}}
+                    {{#if type desired="6" type=renderId}}
+                        {{#each this.questions}}
                             <div class="col-sm-12 col-md-12">
-                                {{this.questionText}}
+                                <select name="{{this.questionId}}" id="{{this.questionId}}">
+                                    <option value="ERROR">-- Please select an option --</option>
+                                    {{#each this.answers}}
+                                        <option value="{{this.id}}">{{this.answerText}}</option>
+                                    {{/each}}
+                                </select>
                             </div>
                         {{/each}}
+                    {{/if}}
+                    {{#if type desired="7" type=renderId}}
                     {{/if}}
                 </div>
             </div>
@@ -72,11 +95,13 @@
             function() { 
                 $("#question-{{@index}}").addClass("questionHover"); 
                 $("#question-{{@index}}").fadeTo(0, 0.4);
+                $("#question-{{@index}}").css("padding-top", 50);
                 $("#questionOptions-{{@index}}").toggle();
             },
             function() { 
                 $("#question-{{@index}}").removeClass("questionHover"); 
                 $("#question-{{@index}}").fadeTo(0, 1);
+                $("#question-{{@index}}").css("padding-top", 0);
                 $("#questionOptions-{{@index}}").toggle();
             }
         );

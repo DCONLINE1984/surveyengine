@@ -21,7 +21,8 @@ class Question extends CommonEncoder
     public $fields = array('id'             => 'id',
                            'questionText'   => 'question_text',
                            'renderId'       => 'render_id',
-                           'parentId'       => 'parent_id');
+                           'parentId'       => 'parent_id',
+                           'header'         => 'header');
 
     /**
      * Constructor

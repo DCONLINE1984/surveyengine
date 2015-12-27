@@ -26,6 +26,12 @@ class Page extends \Application\Model\CommonModel
     protected $sortOrder;
     
     /**
+     * Holds the survey id
+     * @var Int
+     */
+    protected $surveyId;
+    
+    /**
      * Set the page name
      * @param  string $name
      * @return \Api\Model\Page
@@ -63,5 +69,25 @@ class Page extends \Application\Model\CommonModel
     public function getSortOrder()
     {
         return $this->sortOrder;
+    }
+    
+    /**
+     * Set the survey id
+     * @param Int $id
+     * @return \Api\Model\Page
+     */
+    public function setSurveyId($id)
+    {
+        $this->surveyId = $id;
+        return $this;
+    }
+    
+    /**
+     * Get the survey id
+     * @return Int
+     */
+    public function getSurveyId()
+    {
+        return $this->surveyId;
     }
 }

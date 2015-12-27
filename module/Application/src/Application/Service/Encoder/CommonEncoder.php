@@ -113,7 +113,7 @@ abstract class CommonEncoder
     public function validateParameters($request)
     {
         foreach($this->fields as $key=>$value){
-            if($key=="id"){
+            if($key=="id" || $key=="sortOrder"){
                 continue;
             }
             //see if the parameter exists

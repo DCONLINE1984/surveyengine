@@ -32,6 +32,32 @@ class Question extends \Application\Model\CommonModel
     protected $parentId;
     
     /**
+     * Holds some header text for the question
+     * @var string
+     */
+    protected $header;
+    
+    /**
+     * Set the header text
+     * @param string $text
+     * @return \Api\Model\Question
+     */
+    public function setHeader($text)
+    {
+        $this->header = $text;
+        return $this;
+    }
+    
+    /**
+     * Get the header text
+     * @return string
+     */
+    public function getHeader()
+    {
+        return $this->header;
+    }
+    
+    /**
      * Set the question text
      * @param  int  $id
      * @return \Api\Model\Question
